@@ -348,21 +348,6 @@ private fun getThumbnailPositionOffset(
     val y = offsetY - (thumbnailOffset.y + imageThumbnailHeight / 2)
     val distanceToThumbnailCenter = (x * x + y * y)
 
-    /*   // pointer position is in bounds of thumbnail, calculate alternative position to move to
-       return if (distanceToThumbnailCenter < imageThumbnailWidth * imageThumbnailHeight) {
-           *//*   todo  calculateThumbnailOffset(
-                    moveTo,
-                    canvasWidth,
-                    canvasHeight,
-                    imageThumbnailWidth,
-                    imageThumbnailHeight
-                )*//*
-        IntOffset(offset.x.toInt(), offset.y.toInt())
-    } else {
-        //        thumbnailOffset
-        IntOffset(offset.x.toInt() - imageThumbnailWidth / 2, offset.y.toInt() - imageThumbnailHeight)
-    }*/
-
     return calculateThumbnailOffset(
         offset, canvasWidth, canvasHeight, imageThumbnailWidth, imageThumbnailHeight
     )
