@@ -1,0 +1,58 @@
+  override fun onCameraFrame(inputFrame: CameraBridgeViewBase.CvCameraViewFrame?): Mat {
+        val frame = inputFrame?.rgba() ?: Mat()
+        val gray = Mat()
+        val edges = Mat()
+
+        // Convert the frame to grayscale
+        Imgproc.cvtColor(frame, gray, Imgproc.COLOR_RGBA2GRAY)
+
+        // Apply Gaussian blur to the grayscale image
+        Imgproc.GaussianBlur(gray, gray, Size(11.0, 11.0), 0.0)
+
+        // Apply Canny edge detection
+        Imgproc.Canny(gray, edges, 100.0, 200.0)
+
+        // Apply morphological transformations to close gaps in edges
+        val kernel = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, Size(5.0, 5.0))
+        Imgproc.morphologyEx(edges, edges, Imgproc.MORPH_CLOSE, kernel)
+
+        // Apply dilation
+        Imgproc.dilate(edges, edges, kernel)
+
+        // Find contours
+        val contours = mutableListOf<MatOfPoint>()
+        val hierarchy = Mat()
+        Imgproc.findContours(edges, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE)
+
+        // Sort contours by area and find the largest one
+        contours.sortByDescending { Imgproc.contourArea(it) }
+        var documentContour: MatOfPoint? = null
+
+        for (contour in contours) {
+            val approx = MatOfPoint2f()
+            Imgproc.approxPolyDP(MatOfPoint2f(*contour.toArray()), approx, Imgproc.arcLength(MatOfPoint2f(*contour.toArray()), true) * 0.02, true)
+            val points = approx.toArray()
+            if (points.size == 4) {
+                documentContour = MatOfPoint(*points)
+                break
+            }
+        }
+
+        // If we found a document contour, fill it with the desired color
+        if (documentContour != null) {
+
+            val contoursList = listOf(documentContour)
+
+            Imgproc.drawContours(frame, contoursList, -1, Scalar(0.0, 0.0, 255.0, 255.0), 1)
+
+            // Create a mask
+            val mask = Mat.zeros(frame.size(), frame.type())
+
+            // Fill the mask with the desired color
+            Imgproc.fillPoly(mask, contoursList, Scalar(0.0, 0.0, 255.0, 255.0)) // Opaque red color
+
+            // Blend the mask with the frame
+            Core.addWeighted(frame, 1.0, mask, 0.5, 0.0, frame) // 0.5 is the transparency factor
+
+        }
+        return frame

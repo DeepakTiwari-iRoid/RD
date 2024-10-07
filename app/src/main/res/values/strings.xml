@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">R&amp;D</string>
+    <string name="media_notification_channel">"playback notification "</string>
+    <string name="media_notification_channel_description">Music Notification</string>
+    <string name="title_activity_ocsactivity">OCSActivity</string>
+    <plurals name="destinationName">
+        <item quantity="one">Save</item>
+        <item quantity="other">Next</item>
+    </plurals>
+</resources>
