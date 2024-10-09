@@ -48,32 +48,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.app.rd.R
 
-
-val topLevelRoutes = listOf(
-    TopLevelRoute(
-        R.drawable.ic_home_filled,
-        R.drawable.ic_home_outline,
-        "Home",
-        "home"
-    ), TopLevelRoute(
-        R.drawable.ic_home_filled,
-        R.drawable.ic_home_outline,
-        "Archive",
-        "home"
-    ), TopLevelRoute(
-        R.drawable.ic_home_filled,
-        R.drawable.ic_home_outline,
-        "Subscription",
-        "home"
-    ), TopLevelRoute(
-        R.drawable.ic_home_filled,
-        R.drawable.ic_home_outline,
-        "Profile",
-        "home"
-    )
-)
-
-
 @Preview(showBackground = false)
 @Composable
 private fun ThoughtBottomNavPreview() {
@@ -119,20 +93,6 @@ private fun ThoughtBottomNavPreview() {
     }
 }
 
-
-data class TopLevelRoute<T : Any>(
-    @DrawableRes val selectedIcon: Int,
-    @DrawableRes val unSelectedIcon: Int,
-    val title: String,
-    val route: T
-)
-
-@Stable
-data class ParamBottomBar(
-    val color: Color = Color.Black,
-    val cornerRadius: Float = 0f,
-    val strokeWidth: Float = 5f
-)
 
 @Composable
 fun ThoughtBottomNav(
@@ -344,3 +304,42 @@ fun getBitmapFromVectorDrawable(context: Context, drawableId: Int): Bitmap? {
     return bitmap
 }
 
+
+data class TopLevelRoute<T : Any>(
+    @DrawableRes val selectedIcon: Int,
+    @DrawableRes val unSelectedIcon: Int,
+    val title: String,
+    val route: T
+)
+
+@Stable
+data class ParamBottomBar(
+    val color: Color = Color.Black,
+    val cornerRadius: Float = 0f,
+    val strokeWidth: Float = 5f
+)
+
+
+val topLevelRoutes = listOf(
+    TopLevelRoute(
+        R.drawable.ic_home_filled,
+        R.drawable.ic_home_outline,
+        "Home",
+        "home"
+    ), TopLevelRoute(
+        R.drawable.ic_home_filled,
+        R.drawable.ic_home_outline,
+        "Archive",
+        "home"
+    ), TopLevelRoute(
+        R.drawable.ic_home_filled,
+        R.drawable.ic_home_outline,
+        "Subscription",
+        "home"
+    ), TopLevelRoute(
+        R.drawable.ic_home_filled,
+        R.drawable.ic_home_outline,
+        "Profile",
+        "home"
+    )
+)
